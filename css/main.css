@@ -23,3 +23,12 @@ button {
     border-spacing: 2px;
 }
 
+.cell {
+    background-color: brown;
+    text-align: center;
+    color: transparent;
+}
+
+.selected {
+    color: black;
+}

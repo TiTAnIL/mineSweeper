@@ -13,7 +13,7 @@ function init() {
     startGame() // for debuging
 }
 
-
+// start the game!
 function startGame() {
     gBoard = createBoard()
     renderBoard(gBoard)
@@ -25,12 +25,31 @@ function startGame() {
 function setMinesNegsCount(board) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
-            board[i][j].countNeighbors = countNeighbors(i, j, board)
+            board[i][j].minesAroundCount = countNeighbors(i, j, board)
         }
     }
-    console.log(renderBoard(gBoard))
+    renderBoard(board)
 }
 
+
 function cellClicked(elCell, i, j) {
-    console.log('clicked: ', elCell, i, j)
+    // console.log(gBoard)
+    // console.log('clicked: ', elCell, i, j)
+    const currCell = gBoard[i][j]
+
+    if (currCell.isShown || currCell.isMarked || currCell.isMine) {
+        console.log('ahh!')
+        elCell.style.color = 'black'
+        return
+    } else {
+        console.log('Cell clicked: ', elCell, i, j)
+        elCell.style.color = 'black'
+    }
+
+
+
+
+        
+
+
 }

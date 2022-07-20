@@ -7,7 +7,7 @@ function createBoard() {
         board.push([])
 
         for (var j = 0; j < gLevel.SIZE; j++) {
-            board[i][j] = { minesAroundCount: null, isShown: true, isMine: false, isMarked: false }
+            board[i][j] = { minesAroundCount: 0, isShown: false, isMine: false, isMarked: false }
         }
     }
     return board
@@ -24,9 +24,9 @@ function renderBoard(board) {
         for (var j = 0; j < gLevel.SIZE; j++) {
             var currCell = board[i][j];
             if (currCell.isMine) {
-                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})"> ${BOMB}</td>\n`
+                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})">${BOMB}</td>\n`
             } else {
-                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})" </td>\n`
+                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})">${currCell.minesAroundCount}</td>\n`
             }
         }
         strHTML += '</tr>\n'
@@ -56,6 +56,7 @@ function randomColor() {
 function arrayTo(start, end) {
     return [...Array(end - start).keys()].map(i => i + start);
 }
+
 
 //The maximum is exclusive and the minimum is inclusive
 function getRandomInt(min, max) {
