@@ -13,8 +13,10 @@ function init() {
     startGame() // for debuging
 }
 
+
 // start the game!
 function startGame() {
+    gGame.isOn = true
     gBoard = createBoard()
     renderBoard(gBoard)
     setMinesNegsCount(gBoard)
@@ -37,19 +39,17 @@ function cellClicked(elCell, i, j) {
     // console.log('clicked: ', elCell, i, j)
     const currCell = gBoard[i][j]
 
-    if (currCell.isShown || currCell.isMarked || currCell.isMine) {
-        console.log('ahh!')
-        elCell.style.color = 'black'
+    if (currCell.isShown) {
+        console.log('isShown', currCell.isShown)
         return
+
     } else {
         console.log('Cell clicked: ', elCell, i, j)
+        gGame.shownCount++
+        console.log(gGame.shownCount)
+        currCell.isShown = true
         elCell.style.color = 'black'
     }
-
-
-
-
-        
 
 
 }
