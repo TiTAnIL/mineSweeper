@@ -8,7 +8,6 @@ let gBoard
 
 const elTable = document.getElementById('table')
 
-
 function init() {
     console.log('hello')
     startGame() // for debuging
@@ -18,7 +17,6 @@ function init() {
 function startGame() {
     gBoard = createBoard()
     renderBoard(gBoard)
-    console.log('start', gBoard)
     setMinesNegsCount(gBoard)
     //scatterMines(gBoard)
 }
@@ -30,5 +28,9 @@ function setMinesNegsCount(board) {
             board[i][j].countNeighbors = countNeighbors(i, j, board)
         }
     }
+    console.log(renderBoard(gBoard))
+}
 
+function cellClicked(elCell, i, j) {
+    console.log('clicked: ', elCell, i, j)
 }
