@@ -35,30 +35,39 @@
 function createBoard() {
     var board = []
 
-    for (var i = 0; i < gBoardSize; i++) {
+    for (var i = 0; i < gLevel.SIZE; i++) {
         board.push([])
 
-        for (var j = 0; j < gBoardSize; j++) {
-            board[i][j] = ''
+        for (var j = 0; j < gLevel.SIZE; j++) {
+            board[i][j] = { minesAroundCount: null, isShown: true, isMine: false, isMarked: false }
         }
     }
     return board
 }
 
 
-function renderBoard() {
+function renderBoard(board) {
     var strHTML = ''
-    for (var i = 0; i < gBoardSize; i++) {
-        strHTML += '<tr>\n'
+    board[0][0].isMine = true
+    board[3][3].isMine = true
 
-        for (var j = 0; j < gBoardSize; j++) {
-            strHTML += `<td></td>\n`
+    for (var i = 0; i < gLevel.SIZE; i++) {
+        strHTML += '<tr>\n'
+        for (var j = 0; j < gLevel.SIZE; j++) {
+            var currCell = board[i][j];
+            if (currCell.isMine) {
+                strHTML += `<td>${BOMB}</td>\n`
+            } else {
+                strHTML += `<td></td>\n`
+            }
         }
         strHTML += '</tr>\n'
     }
 
+
     elTable.innerHTML = strHTML
     elTable.setAttribute("border", "6");
+    return board
 }
 
 
@@ -102,3 +111,19 @@ function shuffledNums() {
 // setTimeout(function() {
 //     console.log('123')
 // }, 3000);
+
+
+function countNeighbors(cellI, cellJ, mat) {
+    let numOfNeighbors = 0
+    
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i >= mat.length) continue;
+
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+            if (i === cellI && j === cellJ) continue;
+            if (j < 0 || j >= mat[0].length) continue;
+            if (mat[i][j].isMine) numOfNeighbors++  ;
+        }
+    }
+    return numOfNeighbors;
+}

@@ -1,24 +1,34 @@
 'use strict'
 
-const bomb = '&#128163'
+const gLevel = { SIZE: 4, MINES: 2 }
+const gGame = { isOn: false, shownCount: 0, secsPassed: 0 }
+
+const BOMB = '&#128163'
 let gBoard
-const gBoardSize = 8
+
 const elTable = document.getElementById('table')
 
 
 function init() {
-console.log('hello')
-startGame() // for debuging
+    console.log('hello')
+    startGame() // for debuging
 }
 
 
 function startGame() {
     gBoard = createBoard()
     renderBoard(gBoard)
-    console.log(renderBoard())
+    console.log('start', gBoard)
+    setMinesNegsCount(gBoard)
+    //scatterMines(gBoard)
 }
 
 
-function scatterMines() {
-    
+function setMinesNegsCount(board) {
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[0].length; j++) {
+            board[i][j].countNeighbors = countNeighbors(i, j, board)
+        }
+    }
+
 }
