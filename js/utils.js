@@ -16,8 +16,6 @@ function createBoard() {
 
 function renderBoard(board) {
     var strHTML = ''
-    board[1][1].isMine = true
-    board[3][3].isMine = true
 
     for (var i = 0; i < gLevel.SIZE; i++) {
         strHTML += '<tr>\n'
