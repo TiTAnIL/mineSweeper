@@ -81,5 +81,4 @@ function countSeconds() {
 
 function onRightMouseClick(el) {
     console.log('RMClick', el)
-
 }
