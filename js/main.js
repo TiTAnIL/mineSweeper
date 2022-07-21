@@ -3,6 +3,7 @@
 const gLevel = { SIZE: 4, MINES: 2 }
 const gGame = { isOn: false, shownCount: 0, secsPassed: 0 }
 
+let firstClickTimer
 const BOMB = '&#128163'
 const FLAG = '🚩'
 let gFlagCount = 0
@@ -26,7 +27,6 @@ function startGame() {
     renderBoard(gBoard)
     scatterMines(gBoard)
     setMinesNegsCount(gBoard)
-    //scatterMines(gBoard)
 }
 
 
@@ -45,7 +45,7 @@ function setMinesNegsCount(board) {
 
 function cellClicked(elCell, i, j) {
 
-    const firstClickTimer = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 985) : false
+    firstClickTimer = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 985) : firstClickTimer
     const currCell = gBoard[i][j]
 
     if (currCell.isMarked || currCell.isShown) {
@@ -54,14 +54,14 @@ function cellClicked(elCell, i, j) {
     } else if (currCell.isMine) {
         elCell.innerHTML = BOMB
         currCell.isShown = true
-        checkGameOver(elCell, i, j)
+        checkGameOver(i, j)
         return
 
     } else {
         (elCell.innerText = currCell.minesAroundCount)
         currCell.isShown = true
         gGame.shownCount++
-        checkGameOver(elCell, i, j)
+        checkGameOver(i, j)
         return
     }
 }
@@ -69,17 +69,21 @@ function cellClicked(elCell, i, j) {
 
 function rightMClick(elCell, i, j) {
     const currCell = gBoard[i][j]
-    const isFirstClick = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 985) : false
+    firstClickTimer = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 985) : firstClickTimer
     if (currCell.isShown) {
         return
 
     } else if (currCell.isMarked) {
         currCell.isMarked = false
         elCell.innerText = ''
+        --gFlagCount
 
     } else {
         currCell.isMarked = true
         elCell.innerText = FLAG
+        ++gFlagCount
+        checkGameOver(i, j)
+
     }
 }
 
@@ -98,12 +102,14 @@ function countSeconds() {
 }
 
 
-function checkGameOver(elCell, i, j) {
+function checkGameOver(i, j) {
     const currCell = gBoard[i][j]
-    if (currCell.isMine) {
-        console.log('you lose')
-    } else if (gGame.shownCount === gLevel.SIZE ** 2 - gLevel.MINES && gGame.MINES === gFlagCount) {
-        console.log('you win')
+    if (gGame.shownCount == gLevel.SIZE ** 2 - gLevel.MINES && gFlagCount == gLevel.MINES) {
+        clearInterval(firstClickTimer)
+        alert('you win')
+    } else if (currCell.isMine && !currCell.isMarked) {
+        clearInterval(firstClickTimer)
+        alert('you lose')
     }
 }
 
@@ -119,4 +125,5 @@ function expandShown(board, elCell,
         // changing smiley in start button
         // reveal neighbor cells if 0 presented
         // ez-med-hard difficulties
+        // first move never a bomb
         // CSS!

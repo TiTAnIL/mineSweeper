@@ -1,6 +1,8 @@
 body {
     padding-top: 60px;
     width: 200px;
+    background: black;
+    color: aqua;
     margin: auto;
 }
 
