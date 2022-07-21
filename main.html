@@ -9,9 +9,9 @@
 </head>
 <body onload="init()">
     <h1>Mine Sweeper</h1>
-    <button onclick="startGame()">Start game</button>
-    <span id="timer">0</span>
-    <table id="table"></table>
+    <button onclick="startGame()" oncontextmenu="event.preventDefault()">Start game</button>
+    <span id="timer" oncontextmenu="event.preventDefault()">0</span>
+    <table id="table" oncontextmenu="event.preventDefault()"></table>
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
 </body>

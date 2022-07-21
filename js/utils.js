@@ -22,9 +22,9 @@ function renderBoard(board) {
         for (var j = 0; j < gLevel.SIZE; j++) {
             var currCell = board[i][j];
             if (currCell.isMine) {
-                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})">${BOMB}</td>\n`
+                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})"; oncontextmenu="event.preventDefault(); rightMClick(this, ${i}, ${j})">${BOMB}</td>\n`
             } else {
-                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})">${currCell.minesAroundCount}</td>\n`
+                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})"; oncontextmenu="event.preventDefault(); rightMClick(this, ${i}, ${j})">${currCell.minesAroundCount}</td>\n`
             }
         }
         strHTML += '</tr>\n'
@@ -33,6 +33,7 @@ function renderBoard(board) {
 
     elTable.innerHTML = strHTML
     elTable.setAttribute("border", "6");
+    // console.log(elTable)
     return board
 }
 

@@ -13,10 +13,7 @@ let elTimer = document.getElementById('timer')
 
 function init() {
     console.log('hello')
-    elTable.addEventListener('contextmenu', e => {
-        onRightMouseClick(e)
-        e.preventDefault()
-      })
+
     startGame() // for debuging
 }
 
@@ -45,29 +42,37 @@ function setMinesNegsCount(board) {
 function cellClicked(elCell, i, j) {
     // console.log(gBoard)
     // console.log('clicked: ', elCell, i, j)
-    
+
     const isFirstClick = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 1000) : false
-    
+
     const currCell = gBoard[i][j]
 
-    if (currCell.isShown) {
-        console.log('isShown', currCell.isShown)
+    if (currCell.isShown || currCell.isMarked) {
+        console.log('shown or marked', currCell.isShown)
         return
 
     } else {
-        console.log('Cell clicked: ', elCell, i, j)
         gGame.shownCount++
-        console.log(gGame.shownCount)
         currCell.isShown = true
         elCell.style.color = 'black'
     }
 }
 
 
+function rightMClick(elCell, i, j) {
+    const currCell = gBoard[i][j]
+    if (currCell.isMarked) {
+        currCell.isMarked = false
+    } else {
+        currCell.isMarked = true
+    }
+}
+
+
 function scatterMines(board) {
 
-    board[getRandomInt(0,4)][getRandomInt(0,4)].isMine = true
-    board[getRandomInt(0,4)][getRandomInt(0,4)].isMine = true
+    board[getRandomInt(0, 4)][getRandomInt(0, 4)].isMine = true
+    board[getRandomInt(0, 4)][getRandomInt(0, 4)].isMine = true
     renderBoard(board)
 }
 
@@ -78,7 +83,3 @@ function countSeconds() {
 
 }
 
-
-function onRightMouseClick(el) {
-    console.log('RMClick', el)
-}
