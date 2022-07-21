@@ -20,12 +20,7 @@ function renderBoard(board) {
     for (var i = 0; i < gLevel.SIZE; i++) {
         strHTML += '<tr>\n'
         for (var j = 0; j < gLevel.SIZE; j++) {
-            var currCell = board[i][j];
-            if (currCell.isMine) {
-                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})"; oncontextmenu="event.preventDefault(); rightMClick(this, ${i}, ${j})">${' '}</td>\n`
-            } else {
-                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})"; oncontextmenu="event.preventDefault(); rightMClick(this, ${i}, ${j})">${' '}</td>\n`
-            }
+                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})"; oncontextmenu="event.preventDefault(); rightMClick(this, ${i}, ${j})"></td>\n`
         }
         strHTML += '</tr>\n'
     }

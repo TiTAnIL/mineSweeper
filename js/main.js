@@ -5,6 +5,7 @@ const gGame = { isOn: false, shownCount: 0, secsPassed: 0 }
 
 const BOMB = '&#128163'
 const FLAG = '🚩'
+let gFlagCount = 0
 let gBoard
 
 const elTable = document.getElementById('table')
@@ -29,6 +30,9 @@ function startGame() {
 }
 
 
+// while(gGame.isOn) {
+// }
+
 function setMinesNegsCount(board) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
@@ -40,38 +44,43 @@ function setMinesNegsCount(board) {
 
 
 function cellClicked(elCell, i, j) {
-    // console.log(gBoard)
-    // console.log('clicked: ', elCell, i, j)
 
-    const isFirstClick = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 973) : false
-
+    const firstClickTimer = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 985) : false
     const currCell = gBoard[i][j]
 
-    if (currCell.isShown || currCell.isMarked) {
-        console.log('shown or marked', currCell.isShown)
+    if (currCell.isMarked || currCell.isShown) {
+        return
+
+    } else if (currCell.isMine) {
+        elCell.innerHTML = BOMB
+        currCell.isShown = true
+        checkGameOver(elCell, i, j)
         return
 
     } else {
-        gGame.shownCount++
+        (elCell.innerText = currCell.minesAroundCount)
         currCell.isShown = true
-        elCell.style.color = 'black'
+        gGame.shownCount++
+        checkGameOver(elCell, i, j)
+        return
     }
 }
 
 
 function rightMClick(elCell, i, j) {
     const currCell = gBoard[i][j]
-    const isFirstClick = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 987) : false
-    if (currCell.isMarked) {
+    const isFirstClick = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 985) : false
+    if (currCell.isShown) {
+        return
+
+    } else if (currCell.isMarked) {
         currCell.isMarked = false
         elCell.innerText = ''
+
     } else {
-        
         currCell.isMarked = true
         elCell.innerText = FLAG
-        
     }
-    // renderCell({i: i, j: j}, FLAG)
 }
 
 
@@ -88,3 +97,26 @@ function countSeconds() {
     elTimer.innerHTML = gGame.secsPassed
 }
 
+
+function checkGameOver(elCell, i, j) {
+    const currCell = gBoard[i][j]
+    if (currCell.isMine) {
+        console.log('you lose')
+    } else if (gGame.shownCount === gLevel.SIZE ** 2 - gLevel.MINES && gGame.MINES === gFlagCount) {
+        console.log('you win')
+    }
+}
+
+function expandShown(board, elCell,
+    i, j){
+
+    }
+
+
+        //      TODO'S
+        // win/lose condtions
+        // restart game
+        // changing smiley in start button
+        // reveal neighbor cells if 0 presented
+        // ez-med-hard difficulties
+        // CSS!
