@@ -83,4 +83,3 @@ function onRightMouseClick(el) {
     console.log('RMClick', el)
 
 }
-  
