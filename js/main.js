@@ -4,7 +4,7 @@ const gLevel = { SIZE: 4, MINES: 2 }
 const gGame = { isOn: false, shownCount: 0, secsPassed: 0 }
 
 const BOMB = '&#128163'
-const FLAG = '&#128681'
+const FLAG = '🚩'
 let gBoard
 
 const elTable = document.getElementById('table')
@@ -43,7 +43,7 @@ function cellClicked(elCell, i, j) {
     // console.log(gBoard)
     // console.log('clicked: ', elCell, i, j)
 
-    const isFirstClick = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 1000) : false
+    const isFirstClick = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 973) : false
 
     const currCell = gBoard[i][j]
 
@@ -61,11 +61,17 @@ function cellClicked(elCell, i, j) {
 
 function rightMClick(elCell, i, j) {
     const currCell = gBoard[i][j]
+    const isFirstClick = gGame.secsPassed === 0 ? setInterval(function () { countSeconds() }, 987) : false
     if (currCell.isMarked) {
         currCell.isMarked = false
+        elCell.innerText = ''
     } else {
+        
         currCell.isMarked = true
+        elCell.innerText = FLAG
+        
     }
+    // renderCell({i: i, j: j}, FLAG)
 }
 
 
@@ -80,6 +86,5 @@ function scatterMines(board) {
 function countSeconds() {
     gGame.secsPassed++
     elTimer.innerHTML = gGame.secsPassed
-
 }
 
