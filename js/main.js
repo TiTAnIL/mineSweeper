@@ -33,6 +33,7 @@ function startGame() {
     elTimer.innerHTML = 0
     gGame.secsPassed = 0
     gGame.isOn = true
+    gGame.shownCount = 0
     elStartButton.innerHTML = normalFace
     gBoard = createBoard()
     renderBoard(gBoard)
@@ -61,58 +62,58 @@ function stopClock() {
 }
 
 function cellClicked(elCell, i, j) {
+    if (gGame.isOn) {
+        if (gFirstClickTimer === true) {
+            timer = setInterval(function () { startClock() }, 1000);
+            gFirstClickTimer = false
+        }
 
-    if (gFirstClickTimer === true) {
-        timer = setInterval(function () { startClock() }, 1000);
-        gFirstClickTimer = false
-    }
+        const currCell = gBoard[i][j]
+        if (currCell.isMarked || currCell.isShown) {
+            return
 
-    const currCell = gBoard[i][j]
-    if (currCell.isMarked || currCell.isShown) {
-        return
+        } else if (currCell.isMine) {
+            elCell.innerHTML = BOMB
+            currCell.isShown = true
+            checkGameOver(i, j)
+            return
 
-    } else if (currCell.isMine) {
-        elCell.innerHTML = BOMB
-        currCell.isShown = true
-        checkGameOver(i, j)
-        return
-
-    } else {
-        elCell.innerText = currCell.minesAroundCount
-        currCell.isShown = true
-        gGame.shownCount++
-        checkGameOver(i, j)
-        //expandShown(gBoard, i , j, elCell)
-        return
+        } else {
+            elCell.innerText = currCell.minesAroundCount
+            currCell.isShown = true
+            gGame.shownCount++
+            checkGameOver(i, j)
+            //expandShown(gBoard, i , j, elCell)
+            return
+        }
     }
 }
-
 
 function rightMClick(elCell, i, j) {
+    if (gGame.isOn) {
+        if (gFirstClickTimer === true) {
+            timer = setInterval(function () { startClock() }, 1000);
+            gFirstClickTimer = false
+        }
 
-    if (gFirstClickTimer === true) {
-        timer = setInterval(function () { startClock() }, 1000);
-        gFirstClickTimer = false
-    }
+        const currCell = gBoard[i][j]
+        //gFirstClickTimer = gGame.secsPassed === 0 ? setInterval(function () { startClock() }, 1000) : gFirstClickTimer
+        if (currCell.isShown) {
+            return
 
-    const currCell = gBoard[i][j]
-    //gFirstClickTimer = gGame.secsPassed === 0 ? setInterval(function () { startClock() }, 1000) : gFirstClickTimer
-    if (currCell.isShown) {
-        return
+        } else if (currCell.isMarked) {
+            currCell.isMarked = false
+            elCell.innerText = ''
+            --gFlagCount
 
-    } else if (currCell.isMarked) {
-        currCell.isMarked = false
-        elCell.innerText = ''
-        --gFlagCount
-
-    } else {
-        currCell.isMarked = true
-        elCell.innerText = FLAG
-        ++gFlagCount
-        checkGameOver(i, j)
+        } else {
+            currCell.isMarked = true
+            elCell.innerText = FLAG
+            ++gFlagCount
+            checkGameOver(i, j)
+        }
     }
 }
-
 
 function scatterMines(board) {
 
@@ -124,15 +125,23 @@ function scatterMines(board) {
 
 function checkGameOver(i, j) {
     const currCell = gBoard[i][j]
+    console.log('gGame.shownCount', gGame.shownCount)
+    console.log('gLevel.SIZE ** 2 - gLevel.MINES', gLevel.SIZE ** 2 - gLevel.MINES)
+
+
+
+
     if (gGame.shownCount == gLevel.SIZE ** 2 - gLevel.MINES && gFlagCount == gLevel.MINES) {
+        console.log('you win')
         elStartButton.innerHTML = winFace
         stopClock()
-        console.log('you win')
+        gGame.isOn = false
 
     } else if (currCell.isMine && !currCell.isMarked) {
+        console.log('you lose')
         elStartButton.innerHTML = loseFace
         stopClock()
-        console.log('you lose')
+        gGame.isOn = false
     }
 }
 
