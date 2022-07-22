@@ -1,7 +1,9 @@
 'use strict'
 
-const gLevel = { SIZE: 4, MINES: 2 }
+let gLevel = { SIZE: 4, MINES: 2 }
 const gGame = { isOn: false, shownCount: 0, secsPassed: 0 }
+
+let difficulty
 
 let timer
 let gFirstClickTimer = true
@@ -26,10 +28,55 @@ function init() {
 }
 
 
+function dropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+
+window.onclick = function (event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+
+
+function chooseDiff(elClicked) {
+    switch(elClicked.innerHTML) {
+        case 'Easy':
+            gLevel = { SIZE: 4, MINES: 2 }
+            renderBoard(gBoard)
+            startGame()
+
+            break
+        case 'Medium':
+            gLevel = { SIZE: 8, MINES: 12 }
+            renderBoard(gBoard)
+            startGame()
+
+            break
+        case 'Hard':
+            gLevel = { SIZE: 12, MINES: 30 }
+            renderBoard(gBoard)
+            startGame()
+
+            break
+        default:
+            console.log('Choosing Difficulty has Difficulties')
+    }
+}
+
+
 // start the game!
 function startGame() {
     stopClock()
     gFirstClickTimer = true
+    elFlag.innerHTML = FLAG + gLevel.MINES
     elTimer.innerHTML = 0
     gGame.secsPassed = 0
     gGame.isOn = true
@@ -54,12 +101,13 @@ function setMinesNegsCount(board) {
 function startClock() {
     gGame.secsPassed++
     elTimer.innerHTML = gGame.secsPassed
-
 }
+
 
 function stopClock() {
     clearInterval(timer)
 }
+
 
 function cellClicked(elCell, i, j) {
     if (gGame.isOn) {
@@ -97,7 +145,7 @@ function rightMClick(elCell, i, j) {
         }
 
         const currCell = gBoard[i][j]
-        //gFirstClickTimer = gGame.secsPassed === 0 ? setInterval(function () { startClock() }, 1000) : gFirstClickTimer
+
         if (currCell.isShown) {
             return
 
@@ -105,31 +153,40 @@ function rightMClick(elCell, i, j) {
             currCell.isMarked = false
             elCell.innerText = ''
             --gFlagCount
+            let flagsLeft = gLevel.MINES - gFlagCount
+            elFlag.innerHTML = FLAG + flagsLeft
 
         } else {
             currCell.isMarked = true
             elCell.innerText = FLAG
             ++gFlagCount
+            let flagsLeft = gLevel.MINES - gFlagCount
+            elFlag.innerHTML = FLAG + flagsLeft
             checkGameOver(i, j)
         }
     }
 }
 
-function scatterMines(board) {
 
-    board[getRandomInt(0, 4)][getRandomInt(0, 4)].isMine = true
-    board[getRandomInt(0, 4)][getRandomInt(0, 4)].isMine = true
+function scatterMines(board) {
+    let count = 0
+    while(count != gLevel.MINES) {
+        const row = getRandomInt(0, gLevel.SIZE)
+        const col = getRandomInt(0, gLevel.SIZE)
+        if (board[row][col].isMine === false) {
+            console.log(row, col, ' is free')
+            board[row][col].isMine = true
+            count++
+        } else {
+            console.log(row, col, 'ocupied')
+        }
+    }
     renderBoard(board)
 }
 
 
 function checkGameOver(i, j) {
     const currCell = gBoard[i][j]
-    console.log('gGame.shownCount', gGame.shownCount)
-    console.log('gLevel.SIZE ** 2 - gLevel.MINES', gLevel.SIZE ** 2 - gLevel.MINES)
-
-
-
 
     if (gGame.shownCount == gLevel.SIZE ** 2 - gLevel.MINES && gFlagCount == gLevel.MINES) {
         console.log('you win')
@@ -152,11 +209,12 @@ function checkGameOver(i, j) {
 function expandShown(board, cellI, cellJ, elCell) {
     for (var i = cellI - 1; i <= cellI + 1; i++) {
         if (i < 0 || i >= board.length) continue;
+
         for (var j = cellJ - 1; j <= cellJ + 1; j++) {
             if (i === cellI && j === cellJ) continue;
             if (j < 0 || j >= board[0].length) continue;
             const currNeighbour = board[i][j]
-            if (currNeighbour.minesAroundCount !== 0 ) {
+            if (currNeighbour.minesAroundCount !== 0) {
                 return
             }
             // else {
@@ -170,13 +228,10 @@ function expandShown(board, cellI, cellJ, elCell) {
 }
 
 
-        //      TODO'S
-        // reveal neighbor cells if 0 presented
-        
-        // css for win lose condtions
-        
-        // changing smiley in start button
-        // ez-med-hard difficulties
+//      TODO'S
+// reveal neighbor cells if 0 presented
 
-        // first move never a bomb
-        // CSS!
+// first move never a bomb
+// CSS!
+
+

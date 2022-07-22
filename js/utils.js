@@ -87,6 +87,16 @@ function countNeighborMines(cellI, cellJ, board) {
 }
 
 
+function isCellEmpty(board) {
+    for (i = 0; i < board.length; i++) {
+        for (j = 0; j < board.length; j++) {
+            if (!board[i][j].isMine) {
+                return true
+            }
+        }
+    }
+}
+
 // function isNeighborEmptyCell(board, cellI, cellJ) {
 //     for (var i = cellI - 1; i <= cellI + 1; i++) {
 //         if (i < 0 || i >= board.length) continue;
