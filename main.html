@@ -8,10 +8,13 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body onload="init()">
-    <h1>Mine Sweeper</h1>
-    <button onclick="startGame()" oncontextmenu="event.preventDefault()">Start game</button>
-    <span id="timer" oncontextmenu="event.preventDefault()">0</span>
-    <table id="table" oncontextmenu="event.preventDefault()"></table>
+    <div id="container">
+        <h1>Mine Sweeper</h1>
+        <span id="flags">s</span>
+        <button id="start-button" onclick="startGame()" oncontextmenu="event.preventDefault()">😀</button>
+        <span id="timer" oncontextmenu="event.preventDefault()">0</span>
+        <table id="table" oncontextmenu="event.preventDefault()"></table>
+    </div>
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
 </body>

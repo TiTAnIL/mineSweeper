@@ -20,15 +20,13 @@ function renderBoard(board) {
     for (var i = 0; i < gLevel.SIZE; i++) {
         strHTML += '<tr>\n'
         for (var j = 0; j < gLevel.SIZE; j++) {
-                strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})"; oncontextmenu="event.preventDefault(); rightMClick(this, ${i}, ${j})"></td>\n`
+            strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})"; oncontextmenu="event.preventDefault(); rightMClick(this, ${i}, ${j})"></td>\n`
         }
         strHTML += '</tr>\n'
     }
 
-
     elTable.innerHTML = strHTML
     elTable.setAttribute("border", "6");
-    // console.log(elTable)
     return board
 }
 
@@ -75,17 +73,32 @@ function shuffledNums() {
 // }, 3000);
 
 
-function countNeighbors(cellI, cellJ, mat) {
+function countNeighborMines(cellI, cellJ, board) {
     let numOfNeighbors = 0
-    
     for (var i = cellI - 1; i <= cellI + 1; i++) {
-        if (i < 0 || i >= mat.length) continue;
-
+        if (i < 0 || i >= board.length) continue;
         for (var j = cellJ - 1; j <= cellJ + 1; j++) {
             if (i === cellI && j === cellJ) continue;
-            if (j < 0 || j >= mat[0].length) continue;
-            if (mat[i][j].isMine) numOfNeighbors++  ;
+            if (j < 0 || j >= board[i].length) continue;
+            if (board[i][j].isMine) numOfNeighbors++;
         }
     }
     return numOfNeighbors;
 }
+
+
+// function isNeighborEmptyCell(board, cellI, cellJ) {
+//     for (var i = cellI - 1; i <= cellI + 1; i++) {
+//         if (i < 0 || i >= board.length) continue;
+//         for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+//             if (i === cellI && j === cellJ) continue;
+//             if (j < 0 || j >= board[0].length) continue;
+//             if (board[i][j].isMine && board[i][j].isShown) {
+//                 console.log(i,j)
+//             }
+//             else {
+//                 return false
+//             }
+//         }
+//     }
+// }
