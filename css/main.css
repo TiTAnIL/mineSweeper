@@ -1,21 +1,24 @@
 body {
     padding-top: 60px;
     width: 200px;
-    background: black;
-    color: aqua;
+    background: rgb(68, 68, 68);
     margin: auto;
+    background-image: url("/images/background.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:150%;
 }
 
 td {
-    width: 50px;
-    height: 50px;
-    border-radius: 7px;
-    border: 1px solid blue;
+    width: 100px;
+    height: 100px;
+    border-radius: 30%;
+    border: 1px solid transparent;
+    font-size: 400%;
 
 }
 
 #container {
-    background-color: black;
     text-align: center;
 }
 
@@ -23,51 +26,49 @@ td {
     color: blue;
     width: 20%;
     margin-bottom: 10%;
-    
+    margin-inline-start: 10%;    
 }
 
 
 #table {
-    background-color: rgba(0, 0, 255, 0.494);
     table-layout: fixed;
     width: 100%;
-    
+    padding: 50px;
+    box-shadow: -26px -7px 50px 30px;
+    cursor: crosshair;
 }
 
 .cell {
-    background-color: rgb(52, 42, 165);
+    background-color: gray;
     text-align: center;
     color: black;
-
+    
 }
 
-.selected {
+/* .selected {
     color: black;
-}
-
-#flags {
-    color: aqua;
-}
-
+} */
 
 
 .dropbtn {
-    background-color: #3498DB;
-    color: white;
+    background-color: #53646f78;
+    color: black;
     padding: 16px;
-    font-size: 16px;
+    font-size: 40px;
     border: none;
     cursor: pointer;
+    
   }
   
   .dropbtn:hover, .dropbtn:focus {
-    background-color: #2980B9;
+    background-color: black;
+    color:aqua;
   }
   
   .dropdown {
     position: relative;
     display: block;
-    margin-bottom: 10%;
+    
   }
   
   .dropdown-content {
@@ -76,11 +77,15 @@ td {
     background-color: transparent;
     min-width: 160px;
     overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    
   }
 
+  #my-drop-down {
+    color: aqua;
+    
+  }
   
-  .dropdown a:hover {background-color: #ddd;}
+  .dropdown a:hover {background-color: rgb(182, 18, 18);}
   
-  .show {display: block;}
+  .show {display:grid;}

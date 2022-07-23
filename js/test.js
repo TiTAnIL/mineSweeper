@@ -29,7 +29,7 @@ function init() {
 
 
 function dropdown() {
-    document.getElementById("my-drop-down").classList.toggle("show");
+    document.getElementById("myDropdown").classList.toggle("show");
 }
 
 
@@ -47,7 +47,7 @@ window.onclick = function (event) {
 
 
 function chooseDiff(elClicked) {
-    switch(elClicked.innerHTML) {
+    switch (elClicked.innerHTML) {
         case 'Easy':
             gLevel = { SIZE: 4, MINES: 2 }
             renderBoard(gBoard)
@@ -81,7 +81,6 @@ function startGame() {
     gGame.secsPassed = 0
     gGame.isOn = true
     gGame.shownCount = 0
-    gFlagCount = 0
     elStartButton.innerHTML = normalFace
     gBoard = createBoard()
     renderBoard(gBoard)
@@ -110,45 +109,59 @@ function stopClock() {
 }
 
 
+function isFirstClick() {
+    if (gFirstClickTimer === true) {
+        timer = setInterval(function () { startClock() }, 1000);
+        gFirstClickTimer = false
+        return true
+    }
+    return false
+}
+
+
+function isMine(i, j) {
+    if (gBoard[i][j].isMine) {
+        return true
+    }
+    return false
+}
+
+
 function cellClicked(elCell, i, j) {
     if (gGame.isOn) {
-        if (gFirstClickTimer === true) {
-            timer = setInterval(function () { startClock() }, 1000);
-            gFirstClickTimer = false
-            if (gBoard[i][j].isMine) {
-                console.log('ohno')
-            }
-        }
-
-        const currCell = gBoard[i][j]
-        if (currCell.isMarked || currCell.isShown) {
-            return
-
-        } else if (currCell.isMine) {
-            elCell.innerHTML = BOMB
-            currCell.isShown = true
-            checkGameOver(i, j)
-            return
-
+        if (isFirstClick() && isMine(i, j)) {
+            console.log('fsd')
+            scatterMines(gBoard)
+            setMinesNegsCount(gBoard)
         } else {
-            elCell.innerText = currCell.minesAroundCount
-            currCell.isShown = true
-            gGame.shownCount++
-            checkGameOver(i, j)
-            //expandShown(gBoard, i , j, elCell)
-            return
+
+            const currCell = gBoard[i][j]
+            if (currCell.isMarked || currCell.isShown) {
+                return
+
+            } else if (currCell.isMine) {
+                elCell.innerHTML = BOMB
+                currCell.isShown = true
+                checkGameOver(i, j)
+                return
+
+            } else {
+                elCell.innerText = currCell.minesAroundCount
+                currCell.isShown = true
+                gGame.shownCount++
+                checkGameOver(i, j)
+                //expandShown(gBoard, i , j, elCell)
+                return
+            }
         }
     }
 }
 
-function rightMClick(elCell, i, j) {
-    if (gGame.isOn) {
-        if (gFirstClickTimer === true) {
-            timer = setInterval(function () { startClock() }, 1000);
-            gFirstClickTimer = false
-        }
 
-        const currCell = gBoard[i][j]
+function rightMClick(elCell, i, j) {
+    const currCell = gBoard[i][j]
+    if (gGame.isOn) {
+        
 
         if (currCell.isShown) {
             return
@@ -166,7 +179,6 @@ function rightMClick(elCell, i, j) {
             ++gFlagCount
             let flagsLeft = gLevel.MINES - gFlagCount
             elFlag.innerHTML = FLAG + flagsLeft
-            console.log('marked')
             checkGameOver(i, j)
         }
     }
@@ -175,12 +187,15 @@ function rightMClick(elCell, i, j) {
 
 function scatterMines(board) {
     let count = 0
-    while(count != gLevel.MINES) {
+    while (count != gLevel.MINES) {
         const row = getRandomInt(0, gLevel.SIZE)
         const col = getRandomInt(0, gLevel.SIZE)
         if (board[row][col].isMine === false) {
+            console.log(row, col, ' is free')
             board[row][col].isMine = true
             count++
+        } else {
+            console.log(row, col, 'ocupied')
         }
     }
     renderBoard(board)
@@ -189,7 +204,7 @@ function scatterMines(board) {
 
 function checkGameOver(i, j) {
     const currCell = gBoard[i][j]
-    console.log('checked')
+
     if (gGame.shownCount == gLevel.SIZE ** 2 - gLevel.MINES && gFlagCount == gLevel.MINES) {
         console.log('you win')
         elStartButton.innerHTML = winFace
