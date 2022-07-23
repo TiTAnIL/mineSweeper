@@ -4,7 +4,7 @@ body {
     background: rgb(68, 68, 68);
     /* margin: auto; */
     /* background-image: url("/images/background.jpg"); */
-    background: url("/images/background.jpg") no-repeat fixed 50% 50%;
+    background: url("images/background.jpg") no-repeat fixed 50% 50%;
     background-size: 100%;
 }   
 

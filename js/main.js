@@ -245,9 +245,10 @@ function expandShown(board, cellI, cellJ) {
 
 //    ###  TODO'S ###
 
+// first click never a bomb
+
 // when mine clicked indication
 
-// first move never a bomb
 
 // scoreboard
 
