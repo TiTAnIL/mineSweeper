@@ -50,7 +50,7 @@ window.onclick = function (event) {
 
 
 function chooseDiff(elClicked) {
-    switch(elClicked.innerHTML) {
+    switch (elClicked.innerHTML) {
         case 'Easy':
             gLevel = { SIZE: 4, MINES: 2 }
             renderBoard(gBoard)
@@ -84,7 +84,9 @@ function startGame() {
     gGame.secsPassed = 0
     gGame.isOn = true
     gGame.shownCount = 0
+    gHearts = 3
     gFlagCount = 0
+    elHeart.innerHTML = HEART + HEART + HEART
     elStartButton.innerHTML = normalFace
     gBoard = createBoard()
     renderBoard(gBoard)
@@ -139,7 +141,7 @@ function cellClicked(elCell, i, j) {
             currCell.isShown = true
             gGame.shownCount++
             checkGameOver(i, j)
-            //expandShown(gBoard, i , j, elCell)
+            expandShown(gBoard, i, j)
             return
         }
     }
@@ -179,7 +181,7 @@ function rightMClick(elCell, i, j) {
 
 function scatterMines(board) {
     let count = 0
-    while(count != gLevel.MINES) {
+    while (count != gLevel.MINES) {
         const row = getRandomInt(0, gLevel.SIZE)
         const col = getRandomInt(0, gLevel.SIZE)
         if (board[row][col].isMine === false) {
@@ -193,7 +195,7 @@ function scatterMines(board) {
 
 function checkGameOver(i, j) {
     const currCell = gBoard[i][j]
-    if (gGame.shownCount == gLevel.SIZE ** 2 - gLevel.MINES && gFlagCount == gLevel.MINES) {
+    if (gGame.shownCount == gLevel.SIZE ** 2 - gLevel.MINES) {
         console.log('you win')
         elStartButton.innerHTML = winFace
         stopClock()
@@ -213,15 +215,14 @@ function triesLeft() {
         elHeart.innerHTML = ''
         return false
     } else {
-    gHearts--
-    elHeart.innerHTML = HEART + HEART
-
-    return true
+        gHearts--
+        elHeart.innerHTML = HEART + HEART
+        return true
     }
 }
 
 
-function expandShown(board, cellI, cellJ, elCell) {
+function expandShown(board, cellI, cellJ) {
     for (var i = cellI - 1; i <= cellI + 1; i++) {
         if (i < 0 || i >= board.length) continue;
 
@@ -229,24 +230,25 @@ function expandShown(board, cellI, cellJ, elCell) {
             if (i === cellI && j === cellJ) continue;
             if (j < 0 || j >= board[0].length) continue;
             const currNeighbour = board[i][j]
-            if (currNeighbour.minesAroundCount !== 0) {
-                return
+            if (board[cellI][cellJ].minesAroundCount === 0 && !currNeighbour.isMine && !currNeighbour.isMarked && !currNeighbour.isShown) {
+                const id = i + ',' + j
+                const elCell = document.getElementById(id)
+                elCell.innerHTML = currNeighbour.minesAroundCount
+                board[i][j].isShown = true
+                expandShown(board, i, j)
             }
-            // else {
-            //     board[i][j].innerHTML = board[i][j].minesAroundCount
-            //     currNeighbour.innerText = currNeighbour.minesAroundCount
-            //     currNeighbour.isShown = true
-            //     gGame.shownCount++
-            // }
         }
     }
 }
 
 
-//      TODO'S
-// reveal neighbor cells if 0 presented
+
+//    ###  TODO'S ###
+
+// when mine clicked indication
 
 // first move never a bomb
-// CSS!
+
+// scoreboard
 
 

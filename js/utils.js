@@ -20,7 +20,7 @@ function renderBoard(board) {
     for (var i = 0; i < gLevel.SIZE; i++) {
         strHTML += '<tr>\n'
         for (var j = 0; j < gLevel.SIZE; j++) {
-            strHTML += `<td class="cell" onclick="cellClicked(this, ${i}, ${j})"; oncontextmenu="event.preventDefault(); rightMClick(this, ${i}, ${j})"></td>\n`
+            strHTML += `<td class="cell" id="${i},${j}" onclick="cellClicked(this, ${i}, ${j})"; oncontextmenu="event.preventDefault(); rightMClick(this, ${i}, ${j})"></td>\n`
         }
         strHTML += '</tr>\n'
     }
