@@ -12,13 +12,14 @@
         <div class="dropdown">
             <button onclick="dropdown(this)" class="dropbtn">Difficulty</button>
             <div id="my-drop-down" class="dropdown-content">
-                <button class="d" onclick="chooseDiff(this)">Easy</button>
-                <button onclick="chooseDiff(this)">Medium</button>
-                <button onclick="chooseDiff(this)">Hard</button>
+                <button id="easy" onclick="chooseDiff(this)">Easy</button>
+                <button id="med" onclick="chooseDiff(this)">Medium</button>
+                <button id="hard" onclick="chooseDiff(this)">Hard</button>
             </div>
         </div>
-        <span id="flags">🚩</span>
+        <span id="hearts">&#128420 &#128420 &#128420</span>
         <button id="start-button" onclick="startGame()" oncontextmenu="event.preventDefault()">😀</button>
+        <span id="flags">🚩</span>
         <span id="timer" oncontextmenu="event.preventDefault()">0</span>
     </div>
         <table id="table" oncontextmenu="event.preventDefault()"></table>

@@ -9,8 +9,10 @@ let timer
 let gFirstClickTimer = true
 const BOMB = '&#128163'
 const FLAG = '🚩'
+const HEART = '&#128420'
 let gFlagCount = 0
 let gBoard
+let gHearts = 3
 
 const normalFace = '😀'
 const loseFace = '😞'
@@ -20,12 +22,13 @@ const elTable = document.getElementById('table')
 const elTimer = document.getElementById('timer')
 const elFlag = document.getElementById('flags')
 const elStartButton = document.getElementById('start-button')
+const elHeart = document.getElementById('hearts')
 
 
-function init() {
-    console.log('hello')
-    startGame() // for debuging
-}
+// function init() {
+//     console.log('hello')
+//     startGame() // for debuging
+// }
 
 
 function dropdown() {
@@ -99,6 +102,7 @@ function setMinesNegsCount(board) {
     renderBoard(board)
 }
 
+
 function startClock() {
     gGame.secsPassed++
     elTimer.innerHTML = gGame.secsPassed
@@ -141,6 +145,7 @@ function cellClicked(elCell, i, j) {
     }
 }
 
+
 function rightMClick(elCell, i, j) {
     if (gGame.isOn) {
         if (gFirstClickTimer === true) {
@@ -166,7 +171,6 @@ function rightMClick(elCell, i, j) {
             ++gFlagCount
             let flagsLeft = gLevel.MINES - gFlagCount
             elFlag.innerHTML = FLAG + flagsLeft
-            console.log('marked')
             checkGameOver(i, j)
         }
     }
@@ -189,18 +193,30 @@ function scatterMines(board) {
 
 function checkGameOver(i, j) {
     const currCell = gBoard[i][j]
-    console.log('checked')
     if (gGame.shownCount == gLevel.SIZE ** 2 - gLevel.MINES && gFlagCount == gLevel.MINES) {
         console.log('you win')
         elStartButton.innerHTML = winFace
         stopClock()
         gGame.isOn = false
 
-    } else if (currCell.isMine && !currCell.isMarked) {
+    } else if (currCell.isMine && !currCell.isMarked && !triesLeft()) {
         console.log('you lose')
         elStartButton.innerHTML = loseFace
         stopClock()
         gGame.isOn = false
+    }
+}
+
+
+function triesLeft() {
+    if (gHearts === 1) {
+        elHeart.innerHTML = ''
+        return false
+    } else {
+    gHearts--
+    elHeart.innerHTML = HEART + HEART
+
+    return true
     }
 }
 
